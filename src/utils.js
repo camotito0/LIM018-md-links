@@ -7,6 +7,7 @@ const path = require('path');
 // 2° ruta absoluta del archivo que se está ejecutando (utils.js)
 // y el argumento extra que sería el path
 const data = [...process.argv];
+
 // regex que encuentra todos los links de un archivo con sintaxis markdown.
 const regexLinks = /\[([^\[]+)\](\(.*\))/gm ;
 
@@ -41,20 +42,32 @@ const fileOrDirectory = (filePath) => {
 	// estaremos utilizando los métodos isFile y isDirectory
 	const dta = fs.statSync(filePath);
 	return dta.isFile() ? filePath : dta.isDirectory() ? filePath : 'no existe el archivo';
-	/* if(dta.isFile()){ console.log(filePath); }
-	else if(dta.isDirectory()){ console.log(filePath); }
-	else { console.log('Error no such file or directory')} */
-	// console.log( dta.isFile() === true ? 'nn' : dta.isDirectory() === true ? 'jjj' : 'Nono')
-	//console.log(ab)
-	/* if(dta.isFile()){
-		console.log('sisi')
-	} else {
-		console.log(dta.isDirectory() ? filePath : 'nono')
-	} */
 }
 
 const extractingLinks = (filePath) => {
-	// si la extensión del archivo es .md entonces procedemos a leer el documento
+	// si nos devuelve un filePath entonces podemos decir que es un archivo o directorio
+	if( fileOrDirectory(filePath) ) {
+		console.log('tenemos un filePath')
+		// si la extensión del archivo es .md entonces procedemos a leer el documento
+		if ( extentionFile(filePath) === '.md') {
+			// fs.readFileSync(ruta, 'encode') -> recibe dos paremetros
+			const fileDta = fs.readFileSync(filePath, 'utf8');
+			// tenemos que sacar todos los links existentes (lo haremos con regex)
+			console.log(fileDta.match(regexLinks))
+		} else {
+			// tenemos que entrar al directorio
+			// con fs.readdirSync entramos a la carpeta y este retorna un array con los archivos que contiene
+			const files = fs.readdirSync(filePath);
+			console.log(files)
+			files.map((file) => {
+				// aquí vendría la recursividad fr fileOrDirectory
+				console.log(file)
+				//console.log(fileOrDirectory(file))
+			})
+			//console.log(fs.readFileSync(files, 'utf8'))
+		}
+	}
+/* 	// si la extensión del archivo es .md entonces procedemos a leer el documento
 	if(path.extname(filePath) === '.md'){
 		// fs.readFileSync(ruta, 'encode') -> recibe dos paremetros
 		const fileDta = fs.readFileSync(filePath, 'utf8');
@@ -71,7 +84,7 @@ const extractingLinks = (filePath) => {
 			//console.log(fileOrDirectory(file))
 		})
 		//console.log(fs.readFileSync(files, 'utf8'))
-	}
+	} */
 }
 
-fileOrDirectory(data[2]);
+extractingLinks(data[2]);
