@@ -53,7 +53,7 @@ const fileOrDirectory = (filePath) => {
 	} */
 }
 
-const fileOrDirectory2 = (filePath) => {
+const extractingLinks = (filePath) => {
 	// si la extensión del archivo es .md entonces procedemos a leer el documento
 	if(path.extname(filePath) === '.md'){
 		// fs.readFileSync(ruta, 'encode') -> recibe dos paremetros
