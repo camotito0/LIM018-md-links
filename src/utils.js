@@ -53,16 +53,20 @@ const extractingLinks = (filePath) => {
 			// fs.readFileSync(ruta, 'encode') -> recibe dos paremetros
 			const fileDta = fs.readFileSync(filePath, 'utf8');
 			// tenemos que sacar todos los links existentes (lo haremos con regex)
-			console.log(fileDta.match(regexLinks))
+			console.log(fileDta.match(regexLinks).length)
 		} else {
 			// tenemos que entrar al directorio
 			// con fs.readdirSync entramos a la carpeta y este retorna un array con los archivos que contiene
 			const files = fs.readdirSync(filePath);
 			console.log(files)
+			//console.log(path.dirname(filePath))
 			files.map((file) => {
-				// aquí vendría la recursividad fr fileOrDirectory
 				console.log(file)
-				//console.log(fileOrDirectory(file))
+				// path.join une dos o más rutas
+				const fullPath = path.join(filePath, file)
+				console.log(fullPath)
+				extractingLinks(fullPath)
+				// aquí vendría la recursividad fr fileOrDirectory
 			})
 			//console.log(fs.readFileSync(files, 'utf8'))
 		}
