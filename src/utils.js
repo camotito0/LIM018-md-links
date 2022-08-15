@@ -1,6 +1,7 @@
 const process = require('process');
 const fs = require('fs');
 const path = require('path');
+const { extname } = require('path');
 
 // process.argv recibe argumentos en el proceso de node.js, en este caso guarda
 // 1° la ruta absoluta desde donde se inició el proceso de node,
@@ -14,15 +15,6 @@ const regexLinks = /\[([^\[]+)\](\(.*\))/gm ;
 const extentionFile = (file) => {
 	return path.extname(file)
 }
-
-/* const readingFile = () => {
-	// el segundo parametro es para el encode del archivo
-	if(extentionFile(data[2]) === '.md'){
-		const dta = fs.readFileSync(data[2], 'utf8')
-		//console.log(fs.readFileSync(data[2], 'utf8'))
-		console.log(matchLinks(dta).length);
-	} else return console.log('error')
-} */
 
 const thePathExist = (filePath) => {
 	// fs.existsSync verificamos si la ruta pasada existe o no
@@ -39,48 +31,40 @@ const isAFullPath = (filePath) => {
 const fileOrDirectory = (filePath) => {
 	// verificaremos si la ruta es un archivo o directorio
 	// fs.statSync nos devuelve un objeto con información acerca de la ruta
-	// estaremos utilizando los métodos isFile y isDirectory
+	// estaremos utilizando el método isDirectory
 	const dta = fs.statSync(filePath);
-	return dta.isFile() ? filePath : dta.isDirectory() ? filePath : 'no existe el archivo';
+	return dta.isDirectory()
 }
 
-const extractingLinks = (filePath) => {
-	/* let arrayLinks;
-	// si nos devuelve un filePath entonces podemos decir que es un archivo o directorio
-	if(fileOrDirectory(filePath)) {
-		// console.log('tenemos un filePath')
-		// si la extensión del archivo es .md entonces procedemos a leer el documento
-		if ( extentionFile(filePath) === '.md') {
-			// arrayLinks.push(filePath)
-			const fileDta = fs.readFileSync(filePath, 'utf8');
-			arrayLinks = (fileDta.match(regexLinks));
-			// arrayLinks.flat();
-		} else {
-			// tenemos que entrar al directorio
-			// con fs.readdirSync entramos a la carpeta y este retorna un array con los archivos que contiene
-			const files = fs.readdirSync(filePath);
-			files.map((file) => {
-				// path.join une dos o más rutas
-				const fullPath = path.join(filePath, file);
-				arrayLinks = extractingLinks(fullPath);
-				//arrayLinks.flat();
-			})
-		}
+let paths = [] ;
+const extractingPaths = (filePath) => {
+	if (!fileOrDirectory(filePath) && extentionFile(filePath) === '.md') {
+		// const fileDta = fs.readFileSync(filePath, 'utf8');
+		paths = paths.concat(filePath);
+	} else if(fileOrDirectory(filePath)) {
+		const contentDir = fs.readdirSync(filePath);
+		contentDir.forEach((content) => {
+			const fullPath = path.join(filePath, content);
+			return !fileOrDirectory(fullPath) && extentionFile(fullPath) === '.md' ? paths.push(fullPath) : extractingLinks (fullPath);
+		})
+	} else {
+		console.log('no existe archivo o directorio')
 	}
-	console.log(extractingLinks(filePath))
-	return arrayLinks; */
+	return paths;
 }
 
-/* const links = (arrayPath) => {
+const extractingLinks = (paths) => {
 	let array = [];
-	arrayPath.forEach(path => {
+	paths.forEach((path) => {
 		console.log(path)
 		const fileDta = fs.readFileSync(path, 'utf8');
-		// console.log(fileDta)
-		array.concat(fileDta.match(regexLinks))
-		console.log(fileDta.match(regexLinks))
+		array = array.concat(fileDta.match(regexLinks));
+		// console.log(array)
+		//array.concat(fileDta.match(regexLinks))
+		//console.log(fileDta.match(regexLinks))
 	})
-	console.log(typeof arrayPath)
+	console.log(array)
+	// console.log(typeof arrayLinks)
 }
- */
-extractingLinks(data[2])
+
+extractingLinks(extractingPaths(data[2]))
