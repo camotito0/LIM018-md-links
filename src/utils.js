@@ -45,50 +45,42 @@ const fileOrDirectory = (filePath) => {
 }
 
 const extractingLinks = (filePath) => {
+	/* let arrayLinks;
 	// si nos devuelve un filePath entonces podemos decir que es un archivo o directorio
-	if( fileOrDirectory(filePath) ) {
-		console.log('tenemos un filePath')
+	if(fileOrDirectory(filePath)) {
+		// console.log('tenemos un filePath')
 		// si la extensión del archivo es .md entonces procedemos a leer el documento
 		if ( extentionFile(filePath) === '.md') {
-			// fs.readFileSync(ruta, 'encode') -> recibe dos paremetros
+			// arrayLinks.push(filePath)
 			const fileDta = fs.readFileSync(filePath, 'utf8');
-			// tenemos que sacar todos los links existentes (lo haremos con regex)
-			console.log(fileDta.match(regexLinks).length)
+			arrayLinks = (fileDta.match(regexLinks));
+			// arrayLinks.flat();
 		} else {
 			// tenemos que entrar al directorio
 			// con fs.readdirSync entramos a la carpeta y este retorna un array con los archivos que contiene
 			const files = fs.readdirSync(filePath);
-			console.log(files)
-			//console.log(path.dirname(filePath))
 			files.map((file) => {
-				console.log(file)
 				// path.join une dos o más rutas
-				const fullPath = path.join(filePath, file)
-				console.log(fullPath)
-				extractingLinks(fullPath)
-				// aquí vendría la recursividad fr fileOrDirectory
+				const fullPath = path.join(filePath, file);
+				arrayLinks = extractingLinks(fullPath);
+				//arrayLinks.flat();
 			})
-			//console.log(fs.readFileSync(files, 'utf8'))
 		}
 	}
-/* 	// si la extensión del archivo es .md entonces procedemos a leer el documento
-	if(path.extname(filePath) === '.md'){
-		// fs.readFileSync(ruta, 'encode') -> recibe dos paremetros
-		const fileDta = fs.readFileSync(filePath, 'utf8');
-		// tenemos que sacar todos los links existentes (lo haremos con regex)
-		console.log(fileDta.match(regexLinks))
-	} else {
-		// tenemos que entrar al directorio
-		// con fs.readdirSync entramos a la carpeta y este retorna un array con los archivos que contiene
-		const files = fs.readdirSync(filePath);
-		console.log(files)
-		files.map((file) => {
-			// aquí vendría la recursividad fr fileOrDirectory
-			console.log(path.isAbsolute(file))
-			//console.log(fileOrDirectory(file))
-		})
-		//console.log(fs.readFileSync(files, 'utf8'))
-	} */
+	console.log(extractingLinks(filePath))
+	return arrayLinks; */
 }
 
-extractingLinks(data[2]);
+/* const links = (arrayPath) => {
+	let array = [];
+	arrayPath.forEach(path => {
+		console.log(path)
+		const fileDta = fs.readFileSync(path, 'utf8');
+		// console.log(fileDta)
+		array.concat(fileDta.match(regexLinks))
+		console.log(fileDta.match(regexLinks))
+	})
+	console.log(typeof arrayPath)
+}
+ */
+extractingLinks(data[2])
