@@ -1,7 +1,6 @@
 const process = require('process');
 const fs = require('fs');
 const path = require('path');
-const { extname } = require('path');
 
 // process.argv recibe argumentos en el proceso de node.js, en este caso guarda
 // 1° la ruta absoluta desde donde se inició el proceso de node,
@@ -55,16 +54,22 @@ const extractingPaths = (filePath) => {
 
 const extractingLinks = (paths) => {
 	let array = [];
-	paths.forEach((path) => {
-		console.log(path)
+	let oneMatch = /\[([^\[]+)\]\((.*)\)/;
+
+	paths.map((path) => {
 		const fileDta = fs.readFileSync(path, 'utf8');
-		array = array.concat(fileDta.match(regexLinks));
-		// console.log(array)
-		//array.concat(fileDta.match(regexLinks))
-		//console.log(fileDta.match(regexLinks))
+		const arrLP = fileDta.match(regexLinks);
+		const newArray = arrLP.map((e, i) => {
+			let lineOfSintax = oneMatch.exec(arrLP[i])
+			return {
+				href: lineOfSintax[2],
+				text: lineOfSintax[1],
+				file: path
+			}
+		})
+		array.push(newArray);
 	})
-	console.log(array)
-	// console.log(typeof arrayLinks)
+	return array.flat();
 }
 
 extractingLinks(extractingPaths(data[2]))
