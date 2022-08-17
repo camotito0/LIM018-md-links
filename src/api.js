@@ -2,7 +2,7 @@ const utils = require('./utils');
 const data = [...process.argv];
 
 const mdLinks = (path, options) => {
-    new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         if(utils.thePathExist(path)){
             const fullPath = utils.isAFullPath(path)
             const paths = utils.extractingPaths(fullPath);
