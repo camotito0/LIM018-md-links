@@ -6,6 +6,9 @@
     "node": ">=16.x"
   },
   "dependencies": {
-    "common-js": "^0.3.8"
+    "axios": "^0.21.1",
+    "common-js": "^0.3.8",
+    "node-fetch": "^3.2.10",
+    "request": "^2.81.0"
   }
 }
