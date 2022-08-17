@@ -75,43 +75,61 @@ const extractingLinks = (paths) => {
 
 // función para validar los links
 const validateLinks = (arrayLinks) => {
-	arrayLinks.map((linkObj) => {
-		return axios.get(linkObj.href)
-		.then(response => {
-			arrayLinks = {
-				...linkObj,
+	//console.log(arrayLinks)
+	/* const links = arrayLinks.map((linkObj) => axios.get(linkObj.href))
+	return Promise.allSettled(links)
+	.then((responses) => {
+		//console.log(responses.status)
+		return responses.map(response => {
+			//console.log(response)
+			//return response.status === 'fulfilled' ? {}
+			if(response.status === 'fulfilled'){
+				console.log({
+					status:  response.value.status,
+					message: response.value.statusText
+				})
+				return {
+					status:  response.value.status,
+					message: response.value.statusText
+				}
+			} else if (response.status === 'rejected') {
+				console.log({
+					status:  response.status,
+					message: 'FAIL'
+				})
+			}
+		})
+	
+	}) */
+	//Promise.allSettled se resuelve una vez que todas las promesas en el array sean resolve o reject
+	return Promise.allSettled(arrayLinks.map(links => {
+		return axios.get(links.href)
+		.then((response) => {
+			//actualizamos arrayLinks con status y message
+			return arrayLinks = {
+				...links,
 				status :  response.status ,
-				ok : response.status >= 100 && response.status <= 199 ? response.status :
-				response.status >= 200 && response.status <= 299 ? `ok` :
-				response.status >= 300 && response.status <= 399 ? `redirección` :
-				response.status >= 400 && response.status <= 499 ? `fail, error del cliente` :
-				response.status >= 500 && response.status <= 599 ? `error en el servidor` :
+				message : response.status >= 100 && response.status <= 199 ? response.status :
+				response.status >= 200 && response.status <= 299 ? response.statusText :
+				response.status >= 300 && response.status <= 399 ? response.statusText :
+				response.status >= 400 && response.status <= 499 ? response.statusText :
+				response.status >= 500 && response.status <= 599 ? response.statusText :
 				'something went wrong'
 			}
-			/* Respuestas informativas (100–199),
-			Respuestas satisfactorias (200–299),
-			Redirecciones (300–399),
-			Errores de los clientes (400–499),
-			y errores de los servidores (500–599).
-			// console.log(e) */
 		})
-		.catch(error => {
-			arrayLinks = {
-				...linkObj,
-				fail :  error.message ,
+		.catch(() => {
+			return arrayLinks = {
+				...links,
+				status: 'something went wrong',
+				message :  'FAIL',
 			}
-			console.log(arrayLinks)
-		});
-	})
-	return arrayLinks;
-	// resolve all promise
-	// promise.all
+		})
+	}))
 }
 
-// console.log(validateLinks(extractingLinks(extractingPaths(data[2]))))
-validateLinks(extractingLinks(extractingPaths(data[2])))
+//console.log(validateLinks(extractingLinks(extractingPaths(data[2]))))
+//console.log(isAFullPath(data[2]))
 
-//mdLinks('archivo', {options}) 
 module.exports = {
 	extentionFile,
 	thePathExist,
