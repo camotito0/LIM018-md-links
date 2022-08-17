@@ -60,16 +60,21 @@ const extractingLinks = (paths) => {
 	paths.map((path) => {
 		const fileDta = fs.readFileSync(path, 'utf8');
 		const arrLP = fileDta.match(regexLinks);
-		const newArray = arrLP.map((e, i) => {
-			let lineOfSintax = oneMatch.exec(arrLP[i])
-			return {
-				href: lineOfSintax[2],
-				text: lineOfSintax[1],
-				file: path
-			}
-		})
-		array.push(newArray)
+		if(arrLP !== null){
+			const newArray = arrLP.map((e, i) => {
+				let lineOfSintax = oneMatch.exec(arrLP[i])
+				return {
+					href: lineOfSintax[2],
+					text: lineOfSintax[1],
+					file: path
+				}
+			})
+			array.push(newArray)
+		} else {
+			return array;
+		}
 	})
+	//console.log(array.flat().length)
 	return array.flat();
 }
 
@@ -108,7 +113,7 @@ const validateLinks = (arrayLinks) => {
 			//actualizamos arrayLinks con status y message
 			return arrayLinks = {
 				...links,
-				status :  response.status ,
+				status : response.status ,
 				message : response.status >= 100 && response.status <= 199 ? response.status :
 				response.status >= 200 && response.status <= 299 ? response.statusText :
 				response.status >= 300 && response.status <= 399 ? response.statusText :
@@ -126,9 +131,6 @@ const validateLinks = (arrayLinks) => {
 		})
 	}))
 }
-
-//console.log(validateLinks(extractingLinks(extractingPaths(data[2]))))
-//console.log(isAFullPath(data[2]))
 
 module.exports = {
 	extentionFile,
