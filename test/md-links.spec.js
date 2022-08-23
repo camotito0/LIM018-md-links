@@ -1,10 +1,10 @@
-const mdLinks = require('../');
+const api = require('../src/api');
 
 
 describe('mdLinks', () => {
 
-  it('should...', () => {
-    console.log('FIX ME!');
+  it('debería ser una función', () => {
+    expect(typeof api.mdLinks()).toBe('function');
   });
 
 });

@@ -12,14 +12,10 @@ const data = [...process.argv];
 // regex que encuentra todos los links de un archivo con sintaxis markdown.
 const regexLinks = /\[([^\[]+)\](\(.*\))/gm ;
 
-const extentionFile = (file) => {
-	return path.extname(file)
-}
+const extentionFile = (file) => { return path.extname(file) }
 
-const thePathExist = (filePath) => {
-	// fs.existsSync verificamos si la ruta pasada existe o no
-	return fs.existsSync(filePath)
-}
+// fs.existsSync verificamos si la ruta pasada existe o no
+const thePathExist = (filePath) => { return fs.existsSync(filePath) }
 
 const isAFullPath = (filePath) => {
 	// path.isAbsolute ve si el path introducido es un 'fullpath' (ruta completa), retorna un booleano

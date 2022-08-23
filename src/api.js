@@ -1,5 +1,4 @@
 const utils = require('./utils');
-const data = [...process.argv];
 
 const mdLinks = (path, options) => {
     return new Promise((resolve, reject) => {
@@ -8,13 +7,16 @@ const mdLinks = (path, options) => {
             const paths = utils.extractingPaths(fullPath);
             if(paths.length !== 0) {
                 const links = utils.extractingLinks(paths);
-                if(links.length !== 0){
+                if(links.length !== 0 && options.validate === true){
                     utils.validateLinks(links)
-                    .then((infoArray) =>
-                        infoArray.map((info) => {
-                            resolve(info.value)
+                    .then((infoArray) => {
+                        let infoLinks =  infoArray.map((info) => {
+                            return info.value;
                         })
-                    )
+                        resolve(infoLinks);
+                    })
+                }else if(links.length !== 0 ){
+                    resolve(links)
                 } else {
                     reject(new Error('El archivo no contiene ningún link'))
                 }
@@ -26,5 +28,5 @@ const mdLinks = (path, options) => {
         }
     });
 }
-
-mdLinks(data[2])
+module.exports = mdLinks ;
+//mdLinks(data[2])
