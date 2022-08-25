@@ -1,41 +1,39 @@
 #! /usr/bin/env node
 const mdLinks = require('./api.js');
 const process = require('process');
-const inputDta = [...process.argv];
+const styles = require('./stylesOutput.js')
+const [, , ...finalArgs] = process.argv;
 
-console.log(inputDta)
 
-if(inputDta.length === 2) {
-    console.log('Ingresa un archivo o carpeta a examinar')
+if(finalArgs.length === 0) {
+    console.log(styles.stylingOutput())
 }
 
-if(inputDta.length === 3 && inputDta[2] === '--help') {
-    console.log(`
-        OPTIONS:
-        > --validate
-            * href: URL encontrada.
-            * text: Texto que aparecía dentro del link.
-            * file: Ruta del archivo donde se encontró el link.
-            * status: Código de respuesta HTTP.
-            * ok: Mensaje fail en caso de fallo u ok en caso de éxito.
-        > --stats
-            * Total: total de links encontrados.
-            * Unique: total de links unicos encontrados.
-        > --stats --validate
-            * Total: total de links encontrados.
-            * Unique: total de links unicos encontrados.
-            * Broke: total de links rotos.
-    `)
+if(finalArgs[0] === '--help') {
+    console.log(styles.stylingOutputHelp());
 }
 
-if(inputDta.length === 3 ) {
-    mdLinks(inputDta[2], {validate : false} )
-    .then((links) => { console.log(links)})
+if(finalArgs.length === 1 && finalArgs[0] !== '--help') {
+    mdLinks(finalArgs[0], {validate : false} )
+    .then((links) => { console.log(styles.stylingOutputDefault(links))})
     .catch(() => console.log('Algo salio mal'))
 }
 
-if(inputDta.length === 4 && inputDta[3] === '--validate') {
-    mdLinks(inputDta[2], {validate : true})
-    .then((links) => { console.log(links)})
-    .catch(() => console.log('Algo salio mal'))
+if(finalArgs.length === 2 && (finalArgs[1] === '--validate' || finalArgs[1] === '--v')) {
+    mdLinks(finalArgs[0], {validate : true})
+    .then((links) => { console.log(styles.stylingOutputDefault(links))})
+    .catch(() => console.log('Algo  mal'))
 }
+
+if(finalArgs.length === 2 && (finalArgs[1] === '--stats' || finalArgs[1] === '--s')) {
+    mdLinks(finalArgs[0], {stats : true})
+    .then((links) => { console.log(styles.stylingOutputStats(links)) })
+    .catch(() => console.log('Algo  mal'))
+}
+
+if(finalArgs.length === 3 && (finalArgs[1] === '--stats' && finalArgs[2] === '--validate' || finalArgs[1] === '--s' && finalArgs[2] === '--v')) {
+    mdLinks(finalArgs[0], {statsValidate : true})
+    .then((links) => { console.log(styles.stylingOutputStats(links)) })
+    .catch(() => console.log('Algo  mal'))
+}
+ 

@@ -10,7 +10,7 @@ const axios = require('axios');
 const data = [...process.argv];
 
 // regex que encuentra todos los links de un archivo con sintaxis markdown.
-const regexLinks = /\[([^\[]+)\](\(.*\))/gm ;
+const regexLinks = /\[([^\[]+)\](\(.*\))/gm;
 
 const extentionFile = (file) => { return path.extname(file) }
 
@@ -70,38 +70,11 @@ const extractingLinks = (paths) => {
 			return array;
 		}
 	})
-	//console.log(array.flat().length)
 	return array.flat();
 }
 
 // función para validar los links
 const validateLinks = (arrayLinks) => {
-	//console.log(arrayLinks)
-	/* const links = arrayLinks.map((linkObj) => axios.get(linkObj.href))
-	return Promise.allSettled(links)
-	.then((responses) => {
-		//console.log(responses.status)
-		return responses.map(response => {
-			//console.log(response)
-			//return response.status === 'fulfilled' ? {}
-			if(response.status === 'fulfilled'){
-				console.log({
-					status:  response.value.status,
-					message: response.value.statusText
-				})
-				return {
-					status:  response.value.status,
-					message: response.value.statusText
-				}
-			} else if (response.status === 'rejected') {
-				console.log({
-					status:  response.status,
-					message: 'FAIL'
-				})
-			}
-		})
-	
-	}) */
 	//Promise.allSettled se resuelve una vez que todas las promesas en el array sean resolve o reject
 	return Promise.allSettled(arrayLinks.map(links => {
 		return axios.get(links.href)
@@ -128,6 +101,26 @@ const validateLinks = (arrayLinks) => {
 	}))
 }
 
+const statsLinks = (arrayLinks) => {
+	let stats = [];
+	const totalLinks = arrayLinks.length;
+	const uniqueLinks =	arrayLinks.map((link) => link.href).filter((v, i, a) => a.indexOf(v) === i);
+	
+	stats.total = totalLinks;
+	stats.unique = uniqueLinks.length;
+	return stats;
+}
+
+const validateLinksStats = (links) => {
+	let stats = [];
+	const brokenLinks = links.map((link) => link.value.message).filter((v) => v === 'FAIL');
+	const uniqueLinks = links.map((link) => link.value.href).filter((v, i, a) => a.indexOf(v) === i);
+	stats.total = links.length;
+	stats.unique = uniqueLinks.length;
+	stats.broken = brokenLinks.length;
+	return stats;
+}
+
 module.exports = {
 	extentionFile,
 	thePathExist,
@@ -135,5 +128,7 @@ module.exports = {
 	fileOrDirectory,
 	extractingPaths,
 	extractingLinks,
-	validateLinks
+	validateLinks,
+	statsLinks,
+	validateLinksStats
 }
