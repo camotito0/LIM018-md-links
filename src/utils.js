@@ -1,4 +1,4 @@
-const process = require('process');
+//const process = require('process');
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
@@ -7,30 +7,24 @@ const axios = require('axios');
 // 1° la ruta absoluta desde donde se inició el proceso de node,
 // 2° ruta absoluta del archivo que se está ejecutando (utils.js)
 // y el argumento extra que sería el path
-const data = [...process.argv];
+//const data = [...process.argv];
 
 // regex que encuentra todos los links de un archivo con sintaxis markdown.
 const regexLinks = /\[([^\[]+)\](\(.*\))/gm;
 
-const extentionFile = (file) => { return path.extname(file) }
+const extentionFile = (file) => path.extname(file);
 
 // fs.existsSync verificamos si la ruta pasada existe o no
-const thePathExist = (filePath) => { return fs.existsSync(filePath) }
+const thePathExist = (filePath) => fs.existsSync(filePath);
 
-const isAFullPath = (filePath) => {
-	// path.isAbsolute ve si el path introducido es un 'fullpath' (ruta completa), retorna un booleano
-	// si no es así entonces con path resolve sacamos la ruta actual del documento y lo unimos con la ruta que nos pasan
-	// console.log(path.isAbsolute(filePath) ? 'true' : 'nono')
-	return path.isAbsolute(filePath) ? filePath : path.resolve(filePath);
-}
+// path.isAbsolute ve si el path introducido es un 'fullpath' (ruta completa), retorna un booleano
+// si no es así entonces con path resolve sacamos la ruta actual del documento y lo unimos con la ruta que nos pasan
+const isAFullPath = (filePath) => path.isAbsolute(filePath) ? filePath : path.resolve(filePath);
 
-const fileOrDirectory = (filePath) => {
-	// verificaremos si la ruta es un archivo o directorio
-	// fs.statSync nos devuelve un objeto con información acerca de la ruta
-	// estaremos utilizando el método isDirectory
-	const dta = fs.statSync(filePath);
-	return dta.isDirectory()
-}
+// verificaremos si la ruta es un archivo o directorio
+// fs.statSync nos devuelve un objeto con información acerca de la ruta
+// estaremos utilizando el método isDirectory
+const fileOrDirectory = (filePath) => fs.statSync(filePath).isDirectory();
 
 let paths = [] ;
 const extractingPaths = (filePath) => {
@@ -40,7 +34,7 @@ const extractingPaths = (filePath) => {
 		const contentDir = fs.readdirSync(filePath);
 		contentDir.forEach((content) => {
 			const fullPath = path.join(filePath, content);
-			return !fileOrDirectory(fullPath) && extentionFile(fullPath) === '.md' ? paths.push(fullPath) : extractingLinks (fullPath);
+			return !fileOrDirectory(fullPath) && extentionFile(fullPath) === '.md' ? paths.push(fullPath) : prueba(fullPath);
 		})
 	} else {
 		console.log('no existe archivo o directorio')
@@ -83,12 +77,7 @@ const validateLinks = (arrayLinks) => {
 			return arrayLinks = {
 				...links,
 				status : response.status ,
-				message : response.status >= 100 && response.status <= 199 ? response.status :
-				response.status >= 200 && response.status <= 299 ? response.statusText :
-				response.status >= 300 && response.status <= 399 ? response.statusText :
-				response.status >= 400 && response.status <= 499 ? response.statusText :
-				response.status >= 500 && response.status <= 599 ? response.statusText :
-				'something went wrong'
+				message : 'OK'
 			}
 		})
 		.catch(() => {
