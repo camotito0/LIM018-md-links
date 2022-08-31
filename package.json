@@ -1,7 +1,10 @@
 {
   "name": "md-links",
   "version": "0.1.0",
-  "main": "index.js",
+  "author": "Diana Llerena",
+  "description": "md-Links es una linea de comando que te permite obtener información entre otras opciones sobre los links del archivo/directorio que sean de extensión .md ",
+  "license": "ISC",
+  "main": "./src/api.js",
   "engines": {
     "node": ">=16.x"
   },
