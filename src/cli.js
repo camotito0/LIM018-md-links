@@ -1,5 +1,5 @@
 #! /usr/bin/env node
-const mdLinks = require('./api.js');
+const mdLinks = require('./index.js');
 const process = require('process');
 const styles = require('./stylesOutput.js')
 const [, , ...finalArgs] = process.argv;
