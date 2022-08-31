@@ -10,17 +10,17 @@ sobre los links del archivo/directorio que sean de extensión '.md'.
  
 ## Como utilizarlo? 😉
   * Antes de continuar debes haber instalado el package.
-  *🌼 Corre el comando mdLinks:    
+  * 🌼 Corre el comando mdLinks:    
   ![paso2](https://user-images.githubusercontent.com/105656069/187600220-892364c1-594d-40f6-8c86-fc0560f5fc12.png)
-  *🌼 Corre el comando mdLinks --help para ver las opciones.   
+  * 🌼 Corre el comando mdLinks --help para ver las opciones.   
   ![commandHelp](https://user-images.githubusercontent.com/105656069/187603683-8348a664-b85b-4838-af38-30cd551a1ecd.png)
-  *🌼 Corre el comando mdLinks PATH para ver información de los links.   
+  * 🌼 Corre el comando mdLinks PATH para ver información de los links.   
   ![commandPath](https://user-images.githubusercontent.com/105656069/187604027-182fa2c5-0fc8-4ab7-bf88-a1ce1b94426f.png)
-  *🌼 Corre el comando mdLinks PATH --validate para ver la información validada de los links.    
+  * 🌼 Corre el comando mdLinks PATH --validate para ver la información validada de los links.    
   ![commandValidate](https://user-images.githubusercontent.com/105656069/187604614-94d87c6b-de2a-4cc2-b70e-13b9c2824427.png)
-  *🌼 Corre el comando mdLinks PATH --stats para ver información estadística de los links.   
+  * 🌼 Corre el comando mdLinks PATH --stats para ver información estadística de los links.   
   ![commandStats](https://user-images.githubusercontent.com/105656069/187604856-b2809b58-3fe8-46f5-bd73-f152092d1af9.png)
-  *🌼 Corre el comando mdLinks PATH --stats --validate para ver información estadística y validada de los links.   
+  * 🌼 Corre el comando mdLinks PATH --stats --validate para ver información estadística y validada de los links.   
   ![commandStatsValidate](https://user-images.githubusercontent.com/105656069/187605094-73eaaf1c-e62d-4182-8143-90233e0accef.png)\
 
 ## Autora: Diana Llerena 🌼
